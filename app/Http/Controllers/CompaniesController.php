@@ -19,8 +19,8 @@ class CompaniesController extends Controller
      */
     public function index()
     {
-        $companies = Companies::paginate(10);
-        return view('companies.list')->with('companies' , $companies);
+        $companies = Companies::paginate(10); //get 10 records from the db
+        return view('companies.list')->with('companies' , $companies); //passing a varialbe to the view
     }
 
     /**
@@ -41,6 +41,7 @@ class CompaniesController extends Controller
      */
     public function store(Request $request)
     {
+        //validating the request
         $this->validate($request,[
             'name' =>'required|min:3|max:255',
             'email'=>'email|min:3|max:255',
@@ -48,9 +49,9 @@ class CompaniesController extends Controller
             'website'=>'required|url',
         ]);
 
-        $logo = $request->file('logo');
-        $name = time() . $logo->getClientOriginalName();
-        $logo->storeAs('/public', $name);
+        $logo = $request->file('logo'); // get the logo from the view on name (logo)
+        $name = time() . $logo->getClientOriginalName(); // change it's name to current time+it's original name
+        $logo->storeAs('/public', $name); // store the uploaded file to /public
         $company = new Companies();
         $company->name = request('name');
         $company->email = request('email');
@@ -68,8 +69,8 @@ class CompaniesController extends Controller
      */
     public function show($id)
     {
-        $companies = Companies::find($id);
-        return view('companies.show')->with('companies' , $companies);
+        $companies = Companies::find($id); // find the company of id = $id
+        return view('companies.show')->with('companies' , $companies); // pass the company to the view
     }
 
     /**
@@ -80,8 +81,8 @@ class CompaniesController extends Controller
      */
     public function edit($id)
     {
-        $companies = Companies::find($id);
-        return view('companies.edit')->with('companies' , $companies);
+        $companies = Companies::find($id); // find the company of id = $id
+        return view('companies.edit')->with('companies' , $companies); // pass the company to the view
     }
 
     /**
@@ -93,6 +94,7 @@ class CompaniesController extends Controller
      */
     public function update(Request $request, $id)
     {
+        //validating the request
         $this->validate($request,[
             'name' =>'required|min:3|max:255',
             'email'=>'email|min:3|max:255',
@@ -121,7 +123,7 @@ class CompaniesController extends Controller
      */
     public function destroy($id)
     {
-        $companies = Companies::find($id);
+        $companies = Companies::find($id); // find the company of id = $id --> passed from the request
         $companies->delete();
         return redirect('/companies')->with('success','Company Deleted Successfully');
     }
