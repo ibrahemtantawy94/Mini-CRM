@@ -31,7 +31,7 @@ class EmployeesController extends Controller
     public function create()
     {
         $companies = Companies::all(); //getting all the records in the companies table to pass it to the view
-        return view('employees.create',compact('companies'));
+        return view('employees.create',compact('companies')); //passing a variable to the view
     }
 
     /**
@@ -42,6 +42,7 @@ class EmployeesController extends Controller
      */
     public function store(Request $request)
     {
+        //validating the request
         $this->validate($request,[
             'first_name' =>'required|min:2|max:50',
             'last_name' =>'required|min:2|max:50',
@@ -56,7 +57,7 @@ class EmployeesController extends Controller
         $employee->phone = request('phone');
         $employee->company_id = request('company_id');
         $employee->save();
-        return redirect('/employees')->with('success','company added successfully');
+        return redirect('/employees')->with('success','company added successfully'); //redirect to the view with a success message
     }
 
     /**
@@ -68,7 +69,7 @@ class EmployeesController extends Controller
     public function show($id)
     {
         $employees = Employees::find($id);
-        $company = Companies::find($employees->company_id);
+        $company = Companies::find($employees->company_id); // get the company entity which it's id is the company_id field in employee table
         $data = ['employees'=>$employees , 'company'=>$company];
         return view('employees.show',$data);
     }
@@ -98,6 +99,7 @@ class EmployeesController extends Controller
      */
     public function update(Request $request, $id)
     {
+        // validating the request
         $this->validate($request,[
             'first_name' =>'required|min:2|max:50',
             'last_name' =>'required|min:2|max:50',
